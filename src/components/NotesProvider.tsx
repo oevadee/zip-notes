@@ -25,8 +25,12 @@ export const NotesProvider: ParentComponent<{
 }> = (props) => {
   const [state, setState] = createStore<Note[]>([
     {
-      title: "",
-      text: "",
+      title: "Test",
+      text: "Test text",
+    },
+    {
+      title: "Test 2",
+      text: "Test textfsdfdsfdsikljfklsd jklfj dskljf klsdj klfjds kj flksdj lkfdsjkl sdfjlks djfklfjdskl 2",
     },
   ]);
 
