@@ -3,6 +3,7 @@ import { render } from "solid-js/web";
 import { HopeProvider, HopeThemeConfig } from "@hope-ui/solid";
 
 import App from "./App";
+import { NotesProvider } from "./components/NotesProvider";
 
 const root = document.getElementById("root");
 
@@ -24,7 +25,9 @@ const config: HopeThemeConfig = {
 render(
   () => (
     <HopeProvider config={config}>
-      <App />
+      <NotesProvider>
+        <App />
+      </NotesProvider>
     </HopeProvider>
   ),
   root!

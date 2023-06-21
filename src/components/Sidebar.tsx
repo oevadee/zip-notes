@@ -9,7 +9,8 @@ import {
   DrawerOverlay,
   Input,
 } from "@hope-ui/solid";
-import { Component } from "solid-js";
+import { Component, createSignal } from "solid-js";
+import { useNotes } from "./NotesProvider";
 
 type SidebarProps = {
   isSidebarOpen: () => boolean;
@@ -20,6 +21,25 @@ export const Sidebar: Component<SidebarProps> = ({
   isSidebarOpen,
   closeSidebar,
 }) => {
+  const [, { addNote }] = useNotes();
+  const [title, setTitle] = createSignal("");
+  const [text, setText] = createSignal("");
+
+  const handleAddNote = () => {
+    try {
+      if (title().length === 0 || text().length === 0) {
+        throw new Error("Validation failed");
+      }
+      const note = {
+        title: title(),
+        text: text(),
+      };
+      addNote(note);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   return (
     <Drawer opened={isSidebarOpen()} placement="left" onClose={closeSidebar}>
       <DrawerOverlay />
@@ -28,14 +48,26 @@ export const Sidebar: Component<SidebarProps> = ({
         <DrawerHeader>Create your account</DrawerHeader>
 
         <DrawerBody>
-          <Input placeholder="Type here..." />
+          <Input
+            placeholder="Enter title here..."
+            onInput={(e) => {
+              setTitle(e.target.value);
+            }}
+            mb="$2"
+          />
+          <Input
+            placeholder="Enter text here..."
+            onInput={(e) => {
+              setText(e.target.value);
+            }}
+          />
         </DrawerBody>
 
         <DrawerFooter>
           <Button variant="outline" mr="$3" onClick={closeSidebar}>
             Cancel
           </Button>
-          <Button>Save</Button>
+          <Button onClick={handleAddNote}>Save</Button>
         </DrawerFooter>
       </DrawerContent>
     </Drawer>

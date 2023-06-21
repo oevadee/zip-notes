@@ -1,5 +1,5 @@
 import { createContext, useContext, ParentComponent } from "solid-js";
-import { createStore } from "solid-js/store";
+import { createStore, produce } from "solid-js/store";
 
 export interface Note {
   title: string;
@@ -22,7 +22,7 @@ const NotesContext = createContext<NotesContextValue>([
 
 export const NotesProvider: ParentComponent<{
   notes?: Note[];
-}> = ({ children }) => {
+}> = (props) => {
   const [state, setState] = createStore<Note[]>([
     {
       title: "",
@@ -30,13 +30,19 @@ export const NotesProvider: ParentComponent<{
     },
   ]);
 
-  const addNote = (note: Note) => setState((state) => [...state, note]);
+  const addNote = (note: Note) => {
+    setState(produce((notes) => notes.push(note)));
+  };
 
   return (
     <NotesContext.Provider value={[state, { addNote }]}>
-      {children}
+      {props.children}
     </NotesContext.Provider>
   );
 };
 
-export const useNotes = () => useContext(NotesContext);
+export const useNotes = () => {
+  const context = useContext(NotesContext);
+  if (!context) throw new Error("No context provided");
+  return context;
+};
