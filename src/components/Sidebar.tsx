@@ -10,14 +10,16 @@ import {
   Input,
 } from "@hope-ui/solid";
 import { Component, createSignal } from "solid-js";
-import { useNotes } from "../context/NotesProvider";
 import { nanoid } from "nanoid";
+
+import { useNotes } from "../context/NotesProvider";
 
 type SidebarProps = {
   isSidebarOpen: () => boolean;
   closeSidebar: () => void;
 };
 
+// TODO: Make Sidebar a Dumb Component
 export const Sidebar: Component<SidebarProps> = ({
   isSidebarOpen,
   closeSidebar,
@@ -31,9 +33,8 @@ export const Sidebar: Component<SidebarProps> = ({
       if (title().length === 0 || text().length === 0) {
         throw new Error("Validation failed");
       }
-      const id = nanoid();
       const note = {
-        id,
+        id: nanoid(),
         title: title(),
         text: text(),
         isNew: true,
