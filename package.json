@@ -17,6 +17,8 @@
   "dependencies": {
     "@hope-ui/solid": "^0.6.7",
     "@stitches/core": "^1.2.8",
+    "nanoid": "^4.0.2",
+    "solid-icons": "^1.0.8",
     "solid-js": "^1.6.10",
     "solid-transition-group": "^0.0.10"
   }

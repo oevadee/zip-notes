@@ -1,9 +1,10 @@
 /* @refresh reload */
 import { render } from "solid-js/web";
-import { HopeProvider, HopeThemeConfig } from "@hope-ui/solid";
+import { HopeProvider } from "@hope-ui/solid";
 
-import App from "./App";
-import { NotesProvider } from "./components/NotesProvider";
+import { App } from "./App";
+import { NotesProvider } from "./context/NotesProvider";
+import { themeConfig } from "./styles/theme";
 
 const root = document.getElementById("root");
 
@@ -13,28 +14,9 @@ if (import.meta.env.DEV && !(root instanceof HTMLElement)) {
   );
 }
 
-const config: HopeThemeConfig = {
-  initialColorMode: "system",
-  lightTheme: {
-    colors: {
-      primary1: "salmon",
-      primary2: "blue",
-    },
-  },
-  components: {
-    Button: {
-      defaultProps: {
-        root: {
-          colorScheme: "accent",
-        },
-      },
-    },
-  },
-};
-
 render(
   () => (
-    <HopeProvider config={config}>
+    <HopeProvider config={themeConfig}>
       <NotesProvider>
         <App />
       </NotesProvider>

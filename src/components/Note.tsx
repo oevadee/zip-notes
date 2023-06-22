@@ -1,14 +1,29 @@
-import { Badge, Box, GridItem, Heading, Text } from "@hope-ui/solid";
+import {
+  Badge,
+  Box,
+  Flex,
+  GridItem,
+  Heading,
+  IconButton,
+  Text,
+} from "@hope-ui/solid";
 import { Component } from "solid-js";
-import { Note as NoteType } from "./NotesProvider";
+import { AiOutlineDelete } from "solid-icons/ai";
 
-type NoteProps = {} & NoteType;
+type NoteProps = {
+  title: string;
+  text: string;
+  createdAt: Date;
+  isNew?: boolean;
+  deleteNote: () => void;
+};
 
 export const Note: Component<NoteProps> = ({
   title,
   text,
   isNew = false,
   createdAt,
+  deleteNote,
 }) => {
   return (
     <GridItem
@@ -20,21 +35,32 @@ export const Note: Component<NoteProps> = ({
     >
       <Box p="$6">
         <Box display="flex" alignItems="baseline">
-          {isNew && (
-            <Badge px="$2" colorScheme="primary" rounded="$full">
-              New
-            </Badge>
-          )}
-          <Box
-            color="$neutral9"
-            fontWeight="$bold"
-            letterSpacing="$wide"
-            fontSize="$xs"
-            textTransform="uppercase"
-            ml={isNew ? "$2" : "0"}
-          >
-            {createdAt.toLocaleDateString()}
-          </Box>
+          <Flex w="$full" alignItems="center" justifyContent="space-between">
+            {isNew && (
+              <Badge px="$2" colorScheme="primary" rounded="$full">
+                New
+              </Badge>
+            )}
+            <Box
+              color="$neutral9"
+              fontWeight="$bold"
+              letterSpacing="$wide"
+              fontSize="$xs"
+              textTransform="uppercase"
+              ml={isNew ? "$2" : "0"}
+            >
+              {createdAt.toLocaleDateString()}
+            </Box>
+
+            <IconButton
+              aria-label="Delete note"
+              variant="ghost"
+              onClick={deleteNote}
+              icon={
+                <AiOutlineDelete cursor="pointer" fill="#AA2429" size={23} />
+              }
+            ></IconButton>
+          </Flex>
         </Box>
         <Heading mt="$1" as="h4" lineHeight="$tight" noOfLines={1}>
           {title}
