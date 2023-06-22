@@ -6,13 +6,16 @@
     "start": "vite",
     "dev": "vite",
     "build": "vite build",
-    "serve": "vite preview"
+    "serve": "vite preview",
+    "test": "echo Running tests...",
+    "prepare": "husky install"
   },
   "license": "MIT",
   "devDependencies": {
     "typescript": "^4.9.5",
     "vite": "^4.1.1",
-    "vite-plugin-solid": "^2.5.0"
+    "vite-plugin-solid": "^2.5.0",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "@hope-ui/solid": "^0.6.7",
