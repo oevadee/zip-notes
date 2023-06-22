@@ -33,8 +33,11 @@ export const Sidebar: Component<SidebarProps> = ({
       const note = {
         title: title(),
         text: text(),
+        isNew: true,
+        createdAt: new Date(),
       };
       addNote(note);
+      closeSidebar();
     } catch (err) {
       console.error(err);
     }

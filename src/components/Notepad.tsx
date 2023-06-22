@@ -14,8 +14,8 @@ export const Notepad: Component = () => {
         templateColumns="repeat(2, 1fr)"
         gap="$2"
       >
-        {state.map(({ title, text }) => (
-          <Note title={title} text={text} />
+        {state.map((note) => (
+          <Note {...note} />
         ))}
       </Grid>
     </Container>

@@ -2,11 +2,14 @@ import { Badge, Box, GridItem, Heading, Text } from "@hope-ui/solid";
 import { Component } from "solid-js";
 import { Note as NoteType } from "./NotesProvider";
 
-type NoteProps = {
-  isNew?: boolean;
-} & NoteType;
+type NoteProps = {} & NoteType;
 
-export const Note: Component<NoteProps> = ({ title, text, isNew = false }) => {
+export const Note: Component<NoteProps> = ({
+  title,
+  text,
+  isNew = false,
+  createdAt,
+}) => {
   return (
     <GridItem
       w="$full"
@@ -15,7 +18,6 @@ export const Note: Component<NoteProps> = ({ title, text, isNew = false }) => {
       borderRadius="$lg"
       overflow="hidden"
     >
-      {/* <Box as="img" src={property.imageUrl} alt={property.imageAlt} /> */}
       <Box p="$6">
         <Box display="flex" alignItems="baseline">
           {isNew && (
@@ -31,7 +33,7 @@ export const Note: Component<NoteProps> = ({ title, text, isNew = false }) => {
             textTransform="uppercase"
             ml={isNew ? "$2" : "0"}
           >
-            Created at
+            {createdAt.toLocaleDateString()}
           </Box>
         </Box>
         <Heading mt="$1" as="h4" lineHeight="$tight" noOfLines={1}>

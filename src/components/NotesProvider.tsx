@@ -4,6 +4,8 @@ import { createStore, produce } from "solid-js/store";
 export interface Note {
   title: string;
   text: string;
+  isNew?: boolean;
+  createdAt: Date;
 }
 
 export type NotesContextValue = [
@@ -27,10 +29,12 @@ export const NotesProvider: ParentComponent<{
     {
       title: "Test",
       text: "Test text",
+      createdAt: new Date("December 17, 1995 03:24:00"),
     },
     {
       title: "Test 2",
       text: "Test textfsdfdsfdsikljfklsd jklfj dskljf klsdj klfjds kj flksdj lkfdsjkl sdfjlks djfklfjdskl 2",
+      createdAt: new Date("December 17, 1995 03:24:00"),
     },
   ]);
 
