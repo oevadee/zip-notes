@@ -7,7 +7,7 @@ export const Notepad: Component = () => {
   const [state] = useNotes();
 
   return (
-    <Container border="1px solid WindowFrame">
+    <Container>
       <Grid
         maxW="$full"
         width="$full"
