@@ -1,68 +1,64 @@
-import { nanoid } from "nanoid";
-import { createContext, useContext, ParentComponent } from "solid-js";
-import { createStore, produce } from "solid-js/store";
+import { createContext, useContext, ParentComponent, Accessor } from "solid-js";
+import axios from "axios";
+
+import { useDataFetch } from "../hooks/useDataFetch";
 
 export interface Note {
-  id: string;
   title: string;
-  text: string;
+  description: string;
+  slug: string;
+  createdAt: string;
+  updatedAt: string;
   isNew?: boolean;
-  createdAt: Date;
 }
 
 export type NotesContextValue = [
-  state: Note[],
+  state: Accessor<Note[] | null>,
   actions: {
-    addNote: (note: Note) => void;
+    addNote: (note: NoteInput) => void;
     deleteNote: (noteId: string) => void;
   }
 ];
 
-const NotesContext = createContext<NotesContextValue>([
-  [],
-  {
-    addNote: () => {},
-    deleteNote: () => {},
-  },
-]);
+type NoteInput = {
+  title: string;
+  description: string;
+};
+
+const NotesContext = createContext<NotesContextValue>(undefined);
 
 export const NotesProvider: ParentComponent<{
   notes?: Note[];
 }> = (props) => {
-  const [state, setState] = createStore<Note[]>([
-    {
-      id: nanoid(),
-      title: "Test",
-      text: "Test text",
-      createdAt: new Date("December 17, 1995 03:24:00"),
-    },
-    {
-      id: nanoid(),
-      title: "Test 2",
-      text: "Test textfsdfdsfdsikljfklsd jklfj dskljf klsdj klfjds kj flksdj lkfdsjkl sdfjlks djfklfjdskl 2",
-      createdAt: new Date("December 17, 1995 03:24:00"),
-    },
-  ]);
+  const { data, refetch } = useDataFetch<Note[]>(
+    "http://localhost:3000/api/notes",
+    "notes"
+  );
 
-  const addNote = (note: Note) => {
-    setState(produce((notes) => notes.push(note)));
+  const addNote = async (note: NoteInput) => {
+    try {
+      await axios.post("http://localhost:3000/api/notes", {
+        note,
+      });
+    } catch (err) {
+      console.error(err);
+    } finally {
+      refetch();
+    }
   };
 
-  const deleteNote = (noteId: string) => {
-    console.log(noteId);
-    setState(
-      produce((notes) => {
-        const index = notes.findIndex((note) => note.id === noteId);
-        if (index > -1) {
-          // only splice array when item is found
-          notes.splice(index, 1); // 2nd parameter means remove one item only
-        }
-      })
-    );
+  const deleteNote = async (noteSlug: string) => {
+    try {
+      await axios.delete(`http://localhost:3000/api/notes/${noteSlug}`);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      refetch();
+    }
   };
 
   return (
-    <NotesContext.Provider value={[state, { addNote, deleteNote }]}>
+    <NotesContext.Provider value={[data, { addNote, deleteNote }]}>
       {props.children}
     </NotesContext.Provider>
   );

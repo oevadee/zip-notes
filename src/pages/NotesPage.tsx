@@ -1,11 +1,11 @@
-import { Container, Grid } from "@hope-ui/solid";
-import { Component } from "solid-js";
+import { Component, For, Show } from "solid-js";
+import { Container, Grid, Spinner } from "@hope-ui/solid";
 
 import { useNotes } from "../context/NotesProvider";
 import { Note } from "../components/Note";
 
 export const NotesPage: Component = () => {
-  const [state, { deleteNote }] = useNotes();
+  const [data, { deleteNote }] = useNotes();
 
   return (
     <Container>
@@ -15,15 +15,19 @@ export const NotesPage: Component = () => {
         templateColumns="repeat(2, 1fr)"
         gap="$2"
       >
-        {state.map(({ id, title, text, createdAt, isNew }) => (
-          <Note
-            title={title}
-            text={text}
-            createdAt={createdAt}
-            isNew={isNew}
-            deleteNote={() => deleteNote(id)}
-          />
-        ))}
+        <Show when={data()} fallback={<Spinner />}>
+          <For each={data()}>
+            {({ slug, title, description, createdAt, isNew }) => (
+              <Note
+                title={title}
+                text={description}
+                createdAt={createdAt}
+                isNew={isNew}
+                deleteNote={() => deleteNote(slug)}
+              />
+            )}
+          </For>
+        </Show>
       </Grid>
     </Container>
   );

@@ -10,7 +10,6 @@ import {
   Input,
 } from "@hope-ui/solid";
 import { Component, createSignal } from "solid-js";
-import { nanoid } from "nanoid";
 
 import { useNotes } from "../context/NotesProvider";
 
@@ -33,14 +32,11 @@ export const Sidebar: Component<SidebarProps> = ({
       if (title().length === 0 || text().length === 0) {
         throw new Error("Validation failed");
       }
-      const note = {
-        id: nanoid(),
+      const newNote = {
         title: title(),
-        text: text(),
-        isNew: true,
-        createdAt: new Date(),
+        description: text(),
       };
-      addNote(note);
+      addNote(newNote);
       closeSidebar();
     } catch (err) {
       console.error(err);

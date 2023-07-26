@@ -13,7 +13,7 @@ import { AiOutlineDelete } from "solid-icons/ai";
 type NoteProps = {
   title: string;
   text: string;
-  createdAt: Date;
+  createdAt: string;
   isNew?: boolean;
   deleteNote: () => void;
 };
@@ -49,7 +49,7 @@ export const Note: Component<NoteProps> = ({
               textTransform="uppercase"
               ml={isNew ? "$2" : "0"}
             >
-              {createdAt.toLocaleDateString()}
+              {createdAt}
             </Box>
 
             <IconButton
